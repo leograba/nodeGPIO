@@ -1,5 +1,11 @@
-# files to be ignored by git, such as binaries generated, etc
+# Files and directories to be ignored by git, 
+#such as binaries generated, etc
 
-#ignore the node_modules dir, as the packages can be installed
+# Ignore the node_modules dir, as the packages can be installed
 #by using the npm
 node_modules
+
+# Since I am using Eclipse IDE to remotely access and edit the files,
+#the configuration and project folders should be ommited.
+.project
+.settings
