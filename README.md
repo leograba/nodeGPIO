@@ -7,3 +7,22 @@ This directory contains the code files needed to run the demo described step-by-
 The server-side application is built using Node.js to access the board GPIOs, via filesystem operations, and the Express framework to run a webserver which handles incoming POST requests by the client-side application, changing GPIO states and answering to the client as needed.
 
 The client-side application has two styling approaches: near-zero CSS, focusing on the functionality rather than style; and using the Bootstrap framework - providing a quick example on how to build a simple yet welcoming user-interface. Regarding the functionality, Javascript jQuery, along with AJAX, is used to create a responsive experience.
+
+# Dependencies
+To run this application some node modules need to be installed:
+
+  [Express framework](http://expressjs.com/):
+    npm install express # install the Express framework to build a webserver
+    
+  [Body-parser](https://github.com/expressjs/body-parser) middleware for Express:
+    npm install body-parser # install this Node.js middleware to parse JSON body for the Express framework
+
+# Helpful modules
+To help the development of node applications, there are some modules that can be useful
+  
+  [Nodemon](http://nodemon.io/):
+    npm install -g nodemon # restart the app whenever a file within the project changes
+    
+  [Debug](https://www.npmjs.com/package/debug) (already installed with Express):
+    npm install debug # anyway if you need it for other projects
+	

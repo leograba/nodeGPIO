@@ -6,8 +6,6 @@
 $(function(){ //wait for the page to be fully loaded
 	$(".btn").click(function(){ //if element of class "btn" is clicked
 		var btn_status = {id:"", val:""}; //data to be sent to the server
-		console.log(this);
-		console.log($(this));
 		
 		if(this.checked){ //check whether button is pressed or not
 			$(this).siblings().html("ON").css("color","green"); //changes label and color
@@ -20,7 +18,6 @@ $(function(){ //wait for the page to be fully loaded
 			btn_status.id = $(this).attr("id"); //get which button was clicked
 			btn_status.val = "off"; //tell the server the button is unclicked
 		}
-		console.log(btn_status);
 		
 		$.post("/gpio", btn_status, function (data, status){ //send data to the server via HTTP POST
 			if(status == "success"){ //if server responds ok

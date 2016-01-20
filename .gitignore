@@ -1,0 +1,5 @@
+# files to be ignored by git, such as binaries generated, etc
+
+#ignore the node_modules dir, as the packages can be installed
+#by using the npm
+node_modules

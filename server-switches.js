@@ -11,6 +11,7 @@ var fs = require('fs'); //module to handle the file system
 var express = require('express'); //webserver module
 var bodyParser = require('body-parser');
 var app = express();
+var debug = require('debug')('myserver');
 
 /* VF61 GPIO pins */
 /*var	LED1 = '47' // PTC2, 101(SODIMM), 16(IRIS)
@@ -25,7 +26,7 @@ var GPIO = {LED1:'47',	LED2:'50',	LED3:'53',
 var HIGH = 1, LOW = 0, IP_ADDR = '192.168.0.180', PORT_ADDR = 3000;
 	
 //starting app
-console.log('Starting VF61 webserver and GPIO control'); //Hello message
+debug('Starting VF61 webserver and GPIO control'); //hello message
 
 //Using Express to create a server
 app.use(bodyParser.urlencoded({ //to support URL-encoded bodies, must come before routing
@@ -36,7 +37,7 @@ app.use(express.static(__dirname)); //add the directory where HTML and CSS files
 app.route('/gpio') //used to unite all the requst types for the same route
 .post(function (req, res) { //handles incoming POST requests
         var serverResponse = {};
-        console.log(serverResponse);
+        debug(serverResponse);
         //var command = req.body.command, pin = req.body.btn, val = req.body.val;
         if(req.body.id == 'getGPIO'){ //if client requests GPIO status
         	for(io in GPIO){ //iterate through all GPIO
@@ -60,7 +61,7 @@ var server = app.listen(PORT_ADDR, IP_ADDR, function () {//listen at the port an
     var host = server.address().address;
     var port = server.address().port;
     var family = server.address().family;
-    console.log('Express server listening at http://%s:%s %s', host, port, family);
+    debug('Express server listening at http://%s:%s %s', host, port, family);
 });
 
 //call cfGPIO to configure pins
@@ -75,10 +76,10 @@ function cfGPIO(pin, direction){
 /*---------- export pin if not exported and configure the pin direction -----------*/
         fs.access('/sys/class/gpio/gpio' + pin, fs.F_OK, function(err){//
                 if(err){ //if GPIO isn't exported, do it
-                        console.log('exporting GPIO' + pin);
+                        debug('exporting GPIO' + pin);
                         fs.writeFileSync('/sys/class/gpio/export', pin);//export pin
                 }
-                console.log('configuring GPIO' + pin + ' as ' + direction);
+                debug('configuring GPIO' + pin + ' as ' + direction);
                 fs.writeFileSync('/sys/class/gpio/gpio' + pin + '/direction', direction);
         });
 }
@@ -86,12 +87,12 @@ function cfGPIO(pin, direction){
 function rdGPIO(pin){
 /*---------- read GPIO value and return it -----------*/
 	var value = fs.readFileSync('/sys/class/gpio/gpio' + pin + '/value');
-	console.log('reading ' + value + ' from ' + pin);
+	debug('reading ' + value + ' from ' + pin);
 	return value;
 }
 
 function wrGPIO(pin, value){
 /*---------- write value to corresponding GPIO -----------*/
-	console.log('writing ' + value + ' to pin ' + pin);
+	debug('writing ' + value + ' to pin ' + pin);
 	fs.writeFileSync('/sys/class/gpio/gpio' + pin + '/value', value);
 }
