@@ -28,11 +28,18 @@ const HIGH = 1, LOW = 0, IP_ADDR = '192.168.0.180', PORT_ADDR = 3000;
 debug('Starting VF61 webserver and GPIO control'); //Hello message
 
 //Using Express to create a server
+app.use(express.static(__dirname)); //add the directory where HTML and CSS files are
+var server = app.listen(PORT_ADDR, IP_ADDR, function () {//listen at the port and address defined
+    var host = server.address().address;
+    var port = server.address().port;
+    var family = server.address().family;
+    debug('Express server listening at http://%s:%s %s', host, port, family);
+});
+
 app.use(bodyParser.urlencoded({ //to support URL-encoded bodies, must come before routing
 	extended: true
 }));
 
-app.use(express.static(__dirname)); //add the directory where HTML and CSS files are
 app.route('/gpio') //used to unite all the requst types for the same route
 .post(function (req, res) { //handles incoming POST requests
         var serverResponse = {status:''};
@@ -44,7 +51,7 @@ app.route('/gpio') //used to unite all the requst types for the same route
         	wrGPIO(LED3, HIGH);
         	debug('Client request to turn LEDs on');
         	serverResponse.status = 'LEDs turned on.';
-        	res.send(serverResponse); //echo the recieved data to the server
+        	res.send(serverResponse); //send response to the server
         }
         else{ //if button is unclicked, turn off the leds
         	wrGPIO(LED1, LOW);
@@ -52,24 +59,18 @@ app.route('/gpio') //used to unite all the requst types for the same route
             wrGPIO(LED3, LOW);
             debug('Client request to turn LEDs off');
             serverResponse.status = 'LEDs turned off.';
-            res.send(serverResponse); //echo the recieved data to the server
+            res.send(serverResponse); //send response to the server
         }
 });
 
-var server = app.listen(PORT_ADDR, IP_ADDR, function () {//listen at the port and address defined
-    var host = server.address().address;
-    var port = server.address().port;
-    var family = server.address().family;
-    debug('Express server listening at http://%s:%s %s', host, port, family);
+setImmediate(function cfgOurPins(){
+	cfGPIO(LED1, 'out'); //call cfGPIO to configure pins
+	cfGPIO(LED2, 'out');
+	cfGPIO(LED3, 'out');
+	cfGPIO(SW1, 'in');
+	cfGPIO(SW2, 'in');
+	cfGPIO(SW3, 'in');
 });
-
-//call cfGPIO to configure pins
-cfGPIO(LED1, 'out');
-cfGPIO(LED2, 'out');
-cfGPIO(LED3, 'out');
-cfGPIO(SW1, 'in');
-cfGPIO(SW2, 'in');
-cfGPIO(SW3, 'in');
 
 function cfGPIO(pin, direction){
 /*---------- export pin if not exported and configure the pin direction -----------*/
@@ -91,4 +92,16 @@ function rdGPIO(pin){
 function wrGPIO(pin, value){
 /*---------- write value to corresponding GPIO -----------*/
 	fs.writeFileSync('/sys/class/gpio/gpio' + pin + '/value', value);
+}
+
+function copySwToLed(){
+/********* Copy the sw values into the LEDs  *********/
+        var state_now; //temporary sw value
+
+        state_now = 1 - rdGPIO(SW1); //read pushbutton 1 and invert its value...
+        wrGPIO(LED1,state_now); //...then copy its value to LED 1
+        state_now = 1 - rdGPIO(SW2); //read pushbutton 2 and invert its value...
+        wrGPIO(LED2,state_now); //...then copy its value to LED 2
+        state_now = 1 - rdGPIO(SW3); //read pushbutton 3 and invert its value...
+        wrGPIO(LED3,state_now); //...then copy its value to LED 3
 }

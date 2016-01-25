@@ -4,7 +4,7 @@
  */
 
 $(function(){ //wait for the page to be fully loaded
-	$(".btn").click(function(){ //if element of class "btn" is clicked
+	$(".btn").click(function clickHandling(){ //if element of class "btn" is clicked
 		var btn_status = {id:"", val:""}; //data to be sent to the server
 		
 		if(this.checked){ //check whether button is pressed or not

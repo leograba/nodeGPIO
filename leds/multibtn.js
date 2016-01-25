@@ -6,7 +6,7 @@
 $(function(){ //wait for the page to be fully loaded
 	updateCurrentStatus();
 	
-	$(".btn").click(function(){ //if element of class "btn" is clicked
+	$(".btn").click(function clickHandling(){ //if element of class "btn" is clicked
 		var btn_status = {}; //data to be sent to the server
 		btn_status.id = $(this).attr("id"); //get which button was clicked
 		
@@ -27,7 +27,6 @@ $(function(){ //wait for the page to be fully loaded
 				}
 			});
 		}
-		console.log(btn_status);
 		
 		$.post("/gpio", btn_status, function (data, status){ //send data to the server via HTTP POST
 			if(status == "success"){ //if server responds ok
@@ -41,10 +40,8 @@ function updateCurrentStatus(){
 	/* Function that gets the current GPIO status and updates the page accordingly*/
 	$.post("/gpio", {id:'getGPIO'}, function (data, status){ //send data to the server via HTTP POST
 		if(status == "success"){ //if server responds ok
-			console.log(data);//print server response to the console
-			for (currGpio in data){ //iterate through all GPIO
-				console.log(currGpio + " ---> " + data[currGpio]);
-				if(data[currGpio]){ //if state is ON (or HIGH)
+			for (currGpio in data.gpio){ //iterate through all GPIO
+				if(data.gpio[currGpio]){ //if state is ON (or HIGH)
 					$("#" + currGpio).siblings("label").each(function(){ //iterate through all labels 
 						if($(this).attr("for") == $("#" + currGpio).attr("id")){ //find label corresponding to input
 							$(this).html("ON").css("color","green"); //change label and color
