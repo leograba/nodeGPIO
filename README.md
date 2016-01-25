@@ -17,6 +17,12 @@ To run this application some node modules need to be installed:
   [Body-parser](https://github.com/expressjs/body-parser) middleware for Express:
     npm install body-parser # install this Node.js middleware to parse JSON body for the Express framework
 
+## How to run this app
+After installing the dependencies you can run the application using Node. Then just access http://192.168.0.180:3000/ (default values - modify the server codes for other values) to get to the menu. **Notice that only the corresponding links will work properly, when you chose one of the node applications below.**
+- node server-onebtn.js
+- node server-multibtn.js
+- node server-switches.js
+
 # Helpful modules
 To help the development of node applications, there are some modules that can be useful
   
