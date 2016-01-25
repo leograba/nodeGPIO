@@ -55,7 +55,7 @@ app.route('/gpio') //used to unite all the requst types for the same route
     }
     else{ //otherwise change GPIO status
     	serverResponse.status = 'changegpio'; //echo which button was pressed
-        if(val == "on"){ //if button is clicked, turn on the leds
+        if(val == 1){ //if button is clicked, turn on the leds
         	serverResponse.gpio[btn] = HIGH;
         	wrGPIO(GPIO[btn], HIGH);
         }
