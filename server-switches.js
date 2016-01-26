@@ -68,12 +68,14 @@ app.route('/gpio') //used to unite all the requst types for the same route
 });
 
 setImmediate(function cfgOurPins(){
-	cfGPIO(GPIO.LED1, 'out'); //call cfGPIO to configure pins
-	cfGPIO(GPIO.LED2, 'out');
-	cfGPIO(GPIO.LED3, 'out');
-	cfGPIO(GPIO.SW1, 'in');
-	cfGPIO(GPIO.SW2, 'in');
-	cfGPIO(GPIO.SW3, 'in');
+	for(io in GPIO){ //for every GPIO pin
+		if(io.indexOf('LED') != -1){ //if it is a LED
+			cfGPIO(GPIO[io], 'out'); //configure it as output
+		}
+		else if(io.indexOf('SW') != -1){ //make sure it is a switch
+			cfGPIO(GPIO[io], 'in'); //configure it as input
+		}
+	}
 });
 
 function cfGPIO(pin, direction){
