@@ -1,4 +1,12 @@
 # nodeGPIO
+**This repo is outdated, please check the nodeGPIOdemo repositories from my github to get up-to-date codes!**
+
+[Demo 1 - Control GPIO using Node.js](https://github.com/leograba/NodeGPIOdemo.git)
+
+[Demo 2 - Control one GPIO via web using Node.js](https://github.com/leograba/WebNodeGPIOdemo.git)
+
+[Demo 3 - Control multiple GPIO via a friendly web UI, using Node.js](https://github.com/leograba/WebNodeMultiGPIOdemo.git)
+
 Using Node.js and the Express framework to Access the Toradex Colibri VF61 GPIO via web
 
 # Project description
